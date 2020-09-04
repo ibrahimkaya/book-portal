@@ -24,6 +24,11 @@ function Navbar({ title }) {
             logout
           </Link>
         </li>
+        <li className="nav-item active">
+          <Link to="/register" className="nav-link">
+            register
+          </Link>
+        </li>
       </ul>
     </nav>
   );

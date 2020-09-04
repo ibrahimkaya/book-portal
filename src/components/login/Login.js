@@ -1,19 +1,18 @@
-import React, { useState,useContext } from "react";
-import { Container, Grid, Divider, Form, Button } from "semantic-ui-react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import fetch from "isomorphic-unfetch";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import UserContext from "../../UserContext"
-import LoginForm from "./LoginForm"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import UserContext from "../../UserContext";
+import LoginForm from "./LoginForm";
 
 function Login() {
-    const {user,setUser}=useContext(UserContext)
+  const { setUser } = useContext(UserContext);
 
   const [usernamePassword, setUsernamePassword] = useState({
     username: "",
     password: "",
-  });   
+  });
 
   const history = useHistory();
 
@@ -29,12 +28,9 @@ function Login() {
     setUsernamePassword({ ...usernamePassword, [name]: value });
   };
 
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, password } = usernamePassword;
-  
 
     if (username.length < 5 || username.length > 255) {
       setUsernamePasswordError({
@@ -72,46 +68,42 @@ function Login() {
         if (r.ok) {
           return r;
         }
-        if(r.status === 403 ){
+        if (r.status === 403) {
           return Promise.reject(new Error("kullanıcı adı veya şifre yanlış"));
         }
-        if (r.status === 401 ||  r.status === 500) {
+        if (r.status === 401 || r.status === 500) {
           return r;
         }
       })
       .then((response) => response.json())
       .then((response) => {
         toast.success("giriş işlemi başarılı yönlendiriliyorsunuz!");
-        console.log(response)
+        console.log(response);
         setUser({
-            isLoggedIn: true,
-            username: response.username,
-            role: response.roles[0].name
-        })
-        setTimeout(
-          ()=>{
-            history.push("/dashboard")
-          },2000
-        )
-        
+          isLoggedIn: true,
+          username: response.username,
+          role: response.roles[0].name,
+        });
+        setTimeout(() => {
+          history.push("/dashboard");
+        }, 2000);
       })
       .catch((e) => {
         toast.error(e.message);
       });
   };
 
-  return(
-      <div>
-        <LoginForm  
-        handleChange={handleChange} 
+  return (
+    <div>
+      <LoginForm
+        handleChange={handleChange}
         handleSubmit={handleSubmit}
         setUsernamePassword={setUsernamePassword}
         usernamePassword={usernamePassword}
         usernamePasswordError={usernamePasswordError}
-        
-        ></LoginForm>
-      </div>
-  )
-};
+      ></LoginForm>
+    </div>
+  );
+}
 
 export default Login;

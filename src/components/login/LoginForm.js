@@ -1,10 +1,7 @@
-import React, { useState,useContext } from "react";
+import React from "react";
 import { Container, Grid, Divider, Form, Button } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
-import fetch from "isomorphic-unfetch";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 function LoginForm(props){
 
@@ -65,7 +62,7 @@ function LoginForm(props){
                     color="yellow"
                     type="button"
                     onClick={() => {
-                      history.push("/dashboard");
+                      history.push("/register");
                     }}
                   >
                     Kayıt Ol!

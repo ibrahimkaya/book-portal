@@ -9,6 +9,8 @@ import {
 import Dashboard from "./pages/Dashboard";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
+import Register from "./components/register/Register";
+
 import UserContext from "./UserContext";
 import NavBar from "./layouts/Navbar";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,7 +24,7 @@ function App() {
 
   useEffect(() => {
     tryGetAuthUser();
-  },[]);
+  }, []);
 
   const tryGetAuthUser = () => {
     fetch("http://localhost:8081/api/users/profile", {
@@ -64,11 +66,12 @@ function App() {
               exact
               path={"/dashboard"}
               render={(props) =>
-                (user && user.isLoggedIn===true)?
-                 <Dashboard /> :
-                 <Redirect to="/login" />
-                
-                }
+                user && user.isLoggedIn === true ? (
+                  <Dashboard />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
             <Route
               exact
@@ -81,13 +84,21 @@ function App() {
                 )
               }
             />
+            <Route exact path={"/logout"} render={(props) => <Logout />} />
             <Route
               exact
-              path={"/logout"}
+              path={"/register"}
               render={(props) =>
-                  <Logout/>
+                user && user.isLoggedIn ? (
+                  <Redirect to="/dashboard" />
+                ) : (
+                  <Register />
+                )
               }
             />
+            <Route path="*">
+              <p> 404 Aradığınız sayfa bulunamadı! </p>
+            </Route>
           </UserContext.Provider>
         </Switch>
       </div>
