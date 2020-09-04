@@ -1,4 +1,4 @@
-import React, {  useState,useEffect,useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,22 +6,23 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Login from "./components/login/Login";
-import  UserContext  from "./UserContext";
-import NavBar from "./layouts/Navbar"
-import { ToastContainer, toast } from 'react-toastify';
+import Logout from "./components/logout/Logout";
+import UserContext from "./UserContext";
+import NavBar from "./layouts/Navbar";
+import { ToastContainer, toast } from "react-toastify";
 
 toast.configure();
 
 function App() {
-
   const [user, setUser] = useState(null);
 
-  const userProvider = useMemo( ()=>({user,setUser}),[user,setUser])
+  const userProvider = useMemo(() => ({ user, setUser }), [user, setUser]);
 
-
-
+  useEffect(() => {
+    tryGetAuthUser();
+  },[]);
 
   const tryGetAuthUser = () => {
     fetch("http://localhost:8081/api/users/profile", {
@@ -42,10 +43,10 @@ function App() {
       })
       .then((response) => response.json())
       .then((response) => {
-        this.setState({
-          loggedInStatus: "LOGGED_IN",
-          user: response,
-          role: response.roles[0].name,
+        setUser({
+          isLoggedIn: true,
+          username: response.username,
+          role: response.roles.name,
         });
       })
       .catch((e) => {
@@ -53,37 +54,45 @@ function App() {
       });
   };
 
-
-    return (
-      <Router>
-        <div>
-          {(user && console.log( user +" "+user.isLoggedIn ))}
-        <NavBar></NavBar>
-          <Switch>
-            <UserContext.Provider value={userProvider}>
+  return (
+    <Router>
+      <div>
+        <NavBar />
+        <Switch>
+          <UserContext.Provider value={userProvider}>
             <Route
               exact
               path={"/dashboard"}
-              render={(props) => (
-           
-                <Dashboard
-                />
-              )}
+              render={(props) =>
+                (user && user.isLoggedIn===true)?
+                 <Dashboard /> :
+                 <Redirect to="/login" />
+                
+                }
             />
-             <Route
+            <Route
               exact
               path={"/login"}
-              render={(props) => (
-                  (user && user.isLoggedIn) ?
-               <Redirect to="/dashboard"/> :<Login/>
-              )}
+              render={(props) =>
+                user && user.isLoggedIn ? (
+                  <Redirect to="/dashboard" />
+                ) : (
+                  <Login />
+                )
+              }
             />
-            
-            </UserContext.Provider>
-          </Switch>
-        </div>
-      </Router>
-    );
+            <Route
+              exact
+              path={"/logout"}
+              render={(props) =>
+                  <Logout/>
+              }
+            />
+          </UserContext.Provider>
+        </Switch>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
