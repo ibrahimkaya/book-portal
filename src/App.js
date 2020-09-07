@@ -6,7 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
 import Register from "./components/register/Register";
@@ -48,7 +48,7 @@ function App() {
         setUser({
           isLoggedIn: true,
           username: response.username,
-          role: response.roles.name,
+          role: response.roles[0].name
         });
       })
       .catch((e) => {
