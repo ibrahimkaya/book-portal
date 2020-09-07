@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserContext from "../../UserContext";
-import DashboardPanel from "./DashboardPanel";
+import { Input, Grid } from "semantic-ui-react";
+
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import BookTable from "./tables/BookTable";
@@ -10,9 +11,9 @@ const Tables = (props) => {
 
   const [searchParams, setSearchParams] = useState("");
   const [tableData, setTableData] = useState();
-  const [userReadList,setUserReadList] = useState();
-  const [userFavList,setUserFavList] = useState();
-  const [currentPage,setCurrentPage] = useState(0);
+  const [userReadList, setUserReadList] = useState();
+  const [userFavList, setUserFavList] = useState();
+  const [currentPage, setCurrentPage] = useState(0);
 
   const history = useHistory();
 
@@ -22,15 +23,17 @@ const Tables = (props) => {
     fetchFavOrReadLists("favorites");
   }, []);
 
-  useEffect( () => {
-    fetchTablesBySelection()
-  },[currentPage])
+  useEffect(() => {
+    fetchTablesBySelection();
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchTablesBySelection();
+  }, [searchParams]);
 
   const changePageTo = (i) => {
-    setCurrentPage(  i );
+    setCurrentPage(i);
   };
-
-
 
   const fetchFavOrReadLists = (selection) => {
     //selection => reads or favorites
@@ -50,7 +53,6 @@ const Tables = (props) => {
           setUser({});
 
           history.push("/login");
-          
         }
         if (r.status === 403 || r.status === 500) {
           return Promise.reject(new Error("bilinmeyen bir hata oluştu!"));
@@ -61,9 +63,9 @@ const Tables = (props) => {
       })
       .then((data) => {
         if (selection === "reads") {
-            setUserReadList(data)
+          setUserReadList(data);
         } else if (selection === "favorites") {
-            setUserFavList(data)
+          setUserFavList(data);
         }
       })
       .catch((e) => {
@@ -112,29 +114,50 @@ const Tables = (props) => {
       });
   };
 
- const drawTables = () => {
-    if (tableData && props.activeMenu === "books" ) {
-       return <BookTable 
-        books={tableData}
-        currentPage={currentPage} 
-        changePageTo={changePageTo}
-        userFavList={userFavList}
-        userReadList={userReadList}
-        setUserFavList={setUserFavList}
-        setUserReadList={setUserReadList}
-        history={history}
-       />
+  const drawTables = () => {
+    if (tableData && props.activeMenu === "books") {
+      return (
+        <BookTable
+          books={tableData}
+          currentPage={currentPage}
+          changePageTo={changePageTo}
+          userFavList={userFavList}
+          userReadList={userReadList}
+          setUserFavList={setUserFavList}
+          setUserReadList={setUserReadList}
+          history={history}
+        />
+      );
     }
-    return(
-        <div>
-            <p>boş</p>
-        </div>
-    )
+    return (
+      <div>
+        <p>boş</p>
+      </div>
+    );
   };
+  const searchBar = () => (
+    <Input
+      action={{ icon: "search" }}
+      placeholder="Search..."
+      type="text"
+      onChange={(e) => {
+        setSearchParams(e.target.value);
+        changePageTo(0);
+      }}
+    />
+  );
 
-
-  return(
-    drawTables()
+  return (
+    <div>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column>{searchBar()}</Grid.Column>
+        </Grid.Row>
+        <Grid.Row columns="equal" centered>
+          <Grid.Column width={16}>{drawTables()}</Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </div>
   );
 };
 
