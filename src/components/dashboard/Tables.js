@@ -5,9 +5,9 @@ import { Input, Grid } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import BookTable from "./tables/BookTable";
-
+import AuthorTable from "./tables/AuthorTable";
 const Tables = (props) => {
-  const { user, setUser } = useContext(UserContext);
+  const {  setUser } = useContext(UserContext);
 
   const [searchParams, setSearchParams] = useState("");
   const [tableData, setTableData] = useState();
@@ -30,6 +30,10 @@ const Tables = (props) => {
   useEffect(() => {
     fetchTablesBySelection();
   }, [searchParams]);
+
+  useEffect( () => {
+    fetchTablesBySelection()
+  },[props.activeMenu])
 
   const changePageTo = (i) => {
     setCurrentPage(i);
@@ -110,7 +114,7 @@ const Tables = (props) => {
         setTableData(data);
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
       });
   };
 
@@ -128,12 +132,22 @@ const Tables = (props) => {
           history={history}
         />
       );
+    } else if (tableData && props.activeMenu === "authors") {
+      return (
+        <AuthorTable
+          authors={tableData}
+          currentPage={currentPage}
+          changePageTo={changePageTo}
+          history={history}
+        />
+      );
+    } else {
+      return (
+        <div>
+          <p>boş</p>
+        </div>
+      );
     }
-    return (
-      <div>
-        <p>boş</p>
-      </div>
-    );
   };
   const searchBar = () => (
     <Input

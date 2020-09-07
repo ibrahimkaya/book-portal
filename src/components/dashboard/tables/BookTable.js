@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React  from "react";
 import { Icon, Button, Table, Label, Menu } from "semantic-ui-react";
-import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const BookTable = (props) => {
-  console.log(props);
 
   const isUserFavorited = (bookId) => {
     if (props.userFavList) {

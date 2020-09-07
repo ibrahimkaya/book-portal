@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Grid, Container } from "semantic-ui-react";
 import UserContext from "../../UserContext";
 import DashboardPanel from "./DashboardPanel";
 import Tables from "./Tables";
 
 const Dashboard = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [activeMenu, setActiveMenu] = useState("books");
 
   return (
