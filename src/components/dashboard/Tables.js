@@ -6,8 +6,9 @@ import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import BookTable from "./tables/BookTable";
 import AuthorTable from "./tables/AuthorTable";
+import UserTable from "./tables/UserTable";
 const Tables = (props) => {
-  const {  setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const [searchParams, setSearchParams] = useState("");
   const [tableData, setTableData] = useState();
@@ -31,9 +32,10 @@ const Tables = (props) => {
     fetchTablesBySelection();
   }, [searchParams]);
 
-  useEffect( () => {
-    fetchTablesBySelection()
-  },[props.activeMenu])
+  useEffect(() => {
+    fetchTablesBySelection();
+  }, [props.activeMenu]);
+
 
   const changePageTo = (i) => {
     setCurrentPage(i);
@@ -141,11 +143,14 @@ const Tables = (props) => {
           history={history}
         />
       );
-    } else {
+    } else if(tableData && props.activeMenu === "users") {
       return (
-        <div>
-          <p>boş</p>
-        </div>
+        <UserTable
+          users={tableData}
+          currentPage={currentPage}
+          changePageTo={changePageTo}
+          history={history}
+        />
       );
     }
   };
