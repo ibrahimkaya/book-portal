@@ -25,7 +25,7 @@ function Navbar({ title }) {
           </Link>
         </li>
         <li className="nav-item active">
-          <Link to="/register" className="nav-link">
+          <Link to="/" className="nav-link">
             register
           </Link>
         </li>

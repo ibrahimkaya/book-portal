@@ -87,7 +87,7 @@ function App() {
             <Route exact path={"/logout"} render={(props) => <Logout />} />
             <Route
               exact
-              path={"/register"}
+              path={"/"}
               render={(props) =>
                 user && user.isLoggedIn ? (
                   <Redirect to="/dashboard" />

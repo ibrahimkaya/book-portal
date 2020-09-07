@@ -62,7 +62,7 @@ function LoginForm(props){
                     color="yellow"
                     type="button"
                     onClick={() => {
-                      history.push("/register");
+                      history.push("/");
                     }}
                   >
                     Kayıt Ol!
