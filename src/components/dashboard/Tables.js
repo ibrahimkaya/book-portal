@@ -131,7 +131,34 @@ const Tables = (props) => {
     }
   }
 
-
+  const deleteBySelection = (targetId) =>{
+    const selection = props.activeMenu
+    fetch(
+      "http://localhost:8081/api/" + 
+        selection + "/" +
+        targetId 
+        ,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    )
+      .then((r) => {
+        if (r.ok) {
+          return r;
+        }
+        if (r.status === 401 || r.status === 403 || r.status === 500) {
+          return Promise.reject(new Error("bilinmeyen bir hata oluştu!"));
+        }
+      })
+      .then(() => {
+        fetchTablesBySelection();
+        toast.info("işlem başarılı")
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }
   const drawTables = () => {
     if (tableData && props.activeMenu === "books") {
       return (
@@ -145,6 +172,7 @@ const Tables = (props) => {
           setUserReadList={setUserReadList}
           history={history}
           setEdit={setEdit}
+          deleteBySelection={deleteBySelection}
         />
       );
     } else if (tableData && props.activeMenu === "authors") {

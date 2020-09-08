@@ -1,8 +1,10 @@
-import React  from "react";
+import React, { useContext } from "react";
 import { Icon, Button, Table, Label, Menu } from "semantic-ui-react";
 import { toast } from "react-toastify";
+import UserContext from "../../../UserContext";
 
 const BookTable = (props) => {
+  const { user } = useContext(UserContext);
 
   const isUserFavorited = (bookId) => {
     if (props.userFavList) {
@@ -62,7 +64,6 @@ const BookTable = (props) => {
   };
 
   return (
-      
     <Table celled>
       <Table.Header>
         <Table.Row>
@@ -72,6 +73,11 @@ const BookTable = (props) => {
           <Table.HeaderCell>Author</Table.HeaderCell>
           <Table.HeaderCell>Isbn</Table.HeaderCell>
           <Table.HeaderCell> Favori/Okuma Listesi</Table.HeaderCell>
+          {user.role === "ROLE_ADMIN" ? (
+            <Table.HeaderCell> Sil / Geri al </Table.HeaderCell>
+          ) : (
+            ""
+          )}
         </Table.Row>
       </Table.Header>
 
@@ -114,6 +120,16 @@ const BookTable = (props) => {
                   </Button>
                 </Button>
               </Table.Cell>
+              {user.role === "ROLE_ADMIN" ? (
+                <Table.Cell>
+                  <Button
+                    onClick={() => props.deleteBySelection(value.id)}
+                    icon={value.active ? "delete" : "redo"}
+                  ></Button>
+                </Table.Cell>
+              ) : (
+                ""
+              )}
             </Table.Row>
           ))}
       </Table.Body>
@@ -123,7 +139,8 @@ const BookTable = (props) => {
           <Table.HeaderCell colSpan="2">
             <Label icon="info" size="mini">
               <p>
-                Toplam {props.books.totalElements} Kitaptan {props.books.numberOfElements}
+                Toplam {props.books.totalElements} Kitaptan{" "}
+                {props.books.numberOfElements}
                 kaydı görüntülemektesiniz
               </p>
             </Label>

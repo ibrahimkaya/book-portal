@@ -48,6 +48,39 @@ const BookEdit = (props) => {
     }
   };
 
+  const deleteBook = (e) =>{
+    const bookId = e.target.value
+    fetch(
+      "http://localhost:8081/api/books/" +
+        bookId 
+        ,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    )
+      .then((r) => {
+        if (r.ok) {
+          return r;
+        }
+        if (r.status === 401 || r.status === 403 || r.status === 500) {
+          return Promise.reject(new Error("bilinmeyen bir hata oluştu!"));
+        }
+      })
+      .then((r) => {
+        return r.json();
+      })
+      .then((data) => {
+        setBook({data});
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
