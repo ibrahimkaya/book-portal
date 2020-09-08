@@ -33,6 +33,7 @@ const Tables = (props) => {
   }, [searchParams]);
 
   useEffect(() => {
+    setCurrentPage(0)
     fetchTablesBySelection();
   }, [props.activeMenu]);
 
