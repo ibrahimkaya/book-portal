@@ -10,10 +10,11 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
 import Register from "./components/register/Register";
+import AdminPage from "./components/admin/AdminPage"
 
 import UserContext from "./UserContext";
 import NavBar from "./layouts/Navbar";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 
 toast.configure();
 
@@ -48,7 +49,7 @@ function App() {
         setUser({
           isLoggedIn: true,
           username: response.username,
-          role: response.roles[0].name
+          role: response.roles[0].name,
         });
       })
       .catch((e) => {
@@ -93,6 +94,17 @@ function App() {
                   <Redirect to="/dashboard" />
                 ) : (
                   <Register />
+                )
+              }
+            />
+            <Route
+              exact
+              path={"/admin"}
+              render={(props) =>
+                user && user.isLoggedIn === true ? (
+                  <AdminPage  {...props}/>
+                ) : (
+                  <Redirect to="/login" />
                 )
               }
             />

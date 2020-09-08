@@ -8,7 +8,7 @@ import BookTable from "./tables/BookTable";
 import AuthorTable from "./tables/AuthorTable";
 import UserTable from "./tables/UserTable";
 const Tables = (props) => {
-  const { setUser } = useContext(UserContext);
+  const {user, setUser } = useContext(UserContext);
 
   const [searchParams, setSearchParams] = useState("");
   const [tableData, setTableData] = useState();
@@ -120,6 +120,17 @@ const Tables = (props) => {
       });
   };
 
+  const setEdit = (value) =>{
+    
+    if (user.role !== "ROLE_ADMIN") {
+      return; 
+    }
+    if(value && value.id){
+      history.push( {pathname: "/admin", state:  {userClickData: value, opType: "edit", selection: props.activeMenu, edit: true}})
+    }
+  }
+
+
   const drawTables = () => {
     if (tableData && props.activeMenu === "books") {
       return (
@@ -132,6 +143,7 @@ const Tables = (props) => {
           setUserFavList={setUserFavList}
           setUserReadList={setUserReadList}
           history={history}
+          setEdit={setEdit}
         />
       );
     } else if (tableData && props.activeMenu === "authors") {

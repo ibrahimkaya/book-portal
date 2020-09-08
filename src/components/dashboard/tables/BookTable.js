@@ -87,7 +87,7 @@ const BookTable = (props) => {
               </Table.Cell>
               <Table.Cell
                 onClick={() => {
-                  //this.setEdit(value);
+                  props.setEdit(value);
                 }}
               >
                 {value.id}
