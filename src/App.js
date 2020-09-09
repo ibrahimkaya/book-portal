@@ -10,11 +10,11 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
 import Register from "./components/register/Register";
-import AdminPage from "./components/admin/AdminPage"
+import AdminPage from "./components/admin/AdminPage";
 
 import UserContext from "./UserContext";
 import NavBar from "./layouts/Navbar";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 toast.configure();
 
@@ -58,11 +58,11 @@ function App() {
   };
 
   return (
-    <Router>
-      <div>
-        <NavBar />
-        <Switch>
-          <UserContext.Provider value={userProvider}>
+    <UserContext.Provider value={userProvider}>
+      <Router>
+        <div>
+          <NavBar />
+          <Switch>
             <Route
               exact
               path={"/dashboard"}
@@ -102,7 +102,7 @@ function App() {
               path={"/admin"}
               render={(props) =>
                 user && user.isLoggedIn === true ? (
-                  <AdminPage  {...props}/>
+                  <AdminPage {...props} />
                 ) : (
                   <Redirect to="/login" />
                 )
@@ -111,10 +111,10 @@ function App() {
             <Route path="*">
               <p> 404 Aradığınız sayfa bulunamadı! </p>
             </Route>
-          </UserContext.Provider>
-        </Switch>
-      </div>
-    </Router>
+          </Switch>
+        </div>
+      </Router>
+    </UserContext.Provider>
   );
 }
 

@@ -8,7 +8,7 @@ import BookTable from "./tables/BookTable";
 import AuthorTable from "./tables/AuthorTable";
 import UserTable from "./tables/UserTable";
 const Tables = (props) => {
-  const {user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [searchParams, setSearchParams] = useState("");
   const [tableData, setTableData] = useState();
@@ -33,10 +33,9 @@ const Tables = (props) => {
   }, [searchParams]);
 
   useEffect(() => {
-    setCurrentPage(0)
+    setCurrentPage(0);
     fetchTablesBySelection();
   }, [props.activeMenu]);
-
 
   const changePageTo = (i) => {
     setCurrentPage(i);
@@ -121,28 +120,29 @@ const Tables = (props) => {
       });
   };
 
-  const setEdit = (value) =>{
-    
+  const setEdit = (value) => {
     if (user.role !== "ROLE_ADMIN") {
-      return; 
+      return;
     }
-    if(value && value.id){
-      history.push( {pathname: "/admin", state:  {userClickData: value, opType: "edit", selection: props.activeMenu, edit: true}})
+    if (value && value.id) {
+      history.push({
+        pathname: "/admin",
+        state: {
+          userClickData: value,
+          opType: "edit",
+          selection: props.activeMenu,
+          edit: true,
+        },
+      });
     }
-  }
+  };
 
-  const deleteBySelection = (targetId) =>{
-    const selection = props.activeMenu
-    fetch(
-      "http://localhost:8081/api/" + 
-        selection + "/" +
-        targetId 
-        ,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-    )
+  const deleteBySelection = (targetId) => {
+    const selection = props.activeMenu;
+    fetch("http://localhost:8081/api/" + selection + "/" + targetId, {
+      method: "DELETE",
+      credentials: "include",
+    })
       .then((r) => {
         if (r.ok) {
           return r;
@@ -153,12 +153,12 @@ const Tables = (props) => {
       })
       .then(() => {
         fetchTablesBySelection();
-        toast.info("işlem başarılı")
+        toast.info("işlem başarılı");
       })
       .catch((e) => {
         console.log(e.message);
       });
-  }
+  };
   const drawTables = () => {
     if (tableData && props.activeMenu === "books") {
       return (
@@ -184,7 +184,7 @@ const Tables = (props) => {
           history={history}
         />
       );
-    } else if(tableData && props.activeMenu === "users") {
+    } else if (tableData && props.activeMenu === "users") {
       return (
         <UserTable
           users={tableData}
