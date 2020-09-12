@@ -98,8 +98,10 @@ const BookTable = (props) => {
               >
                 {value.id}
               </Table.Cell>
-              <Table.Cell>{value.title} </Table.Cell>
-              <Table.Cell>{value.author && value.author.name}</Table.Cell>
+              <Table.Cell>
+                <Label content={value.title} onClick={ () => {console.log("dasd")}}  icon='book'/>
+                 </Table.Cell>
+              <Table.Cell > <Label content={value.author && value.author.name}  icon="pencil"/> </Table.Cell>
               <Table.Cell>{value.isbn}</Table.Cell>
               <Table.Cell disabled={!value.active}>
                 <Button as="div" labelPosition="right" pointing="rigth">

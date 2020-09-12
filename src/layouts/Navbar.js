@@ -1,40 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Grid, Container, Icon, Segment, Button } from "semantic-ui-react";
 
-function Navbar({ title }) {
+const Navbar = () => {
+  const history = useHistory();
+
   return (
-    <nav className="navbar-nav navbar-expand-lg navbar-dark bg-dark mb-3 p-3">
-      <a href="/" className="navbar-brand">
-        {title}
-      </a>
-
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item active">
-          <Link to="/login" className="nav-link">
-            Login
-          </Link>
-        </li>
-        <li className="nav-item active">
-          <Link to="/dashboard" className="nav-link">
-            Dashboard
-          </Link>
-        </li>
-        <li className="nav-item active">
-          <Link to="/logout" className="nav-link">
-            logout
-          </Link>
-        </li>
-        <li className="nav-item active">
-          <Link to="/" className="nav-link">
-            register
-          </Link>
-        </li>
-      </ul>
-    </nav>
+    <div>
+      <Container>
+        <Grid>
+          <Grid.Row columns="equal" centered>
+            <Grid.Column width={3} floated={"right"}>
+              <Segment clearing>
+                <Button
+                  as="h2"
+                  floated="right"
+                  onClick={() => {
+                    history.push("/logout");
+                  }}
+                >
+                  <Icon name="logout" color="teal" />
+                </Button>
+                <Button as="h2" floated="left" color="teal">
+                  <Icon name="user" />
+                </Button>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
+    </div>
   );
-}
-
-Navbar.defaultProps = {
-  title: "Default App",
 };
+
 export default Navbar;
