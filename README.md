@@ -1,3 +1,30 @@
+# Book Portal  
+Simple book portal front end project,
+
+- Single Page application using with React
+- Backend server is [Book Portal Backend](https://github.com/ibrahimkaya/book-portal-backend)
+
+## Specifications
+- Login & Register
+- Display books, Authors and Users (admin only) 
+- Add books to favorites and read list
+- Searc 
+- Add, delete and Edits User & Book & Authors is admin only, managed by backend server.
+- Role & login based view and routing
+
+### Sample Video
+
+[![SC2 Video](https://cdn.loom.com/sessions/thumbnails/47c20e3da34a464dba52becb7c584136-with-play.gif)](https://www.loom.com/share/47c20e3da34a464dba52becb7c584136)
+
+### Dependencies
+- React
+- Senmantic UI
+- and others [See dependencies list](https://github.com/ibrahimkaya/book-portal/network/dependencies)
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
